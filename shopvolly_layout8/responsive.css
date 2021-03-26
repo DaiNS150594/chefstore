@@ -1,0 +1,63 @@
+/**
+* 8.0 Media Queries
+* ----------------------------------------------------------------------------
+*/
+@import "../shopvolly/responsive.css";
+
+@media only screen and (max-width: 1023px) {
+    .menu-toggle {
+        background-image: url("images/megnor/menu-options.svg");
+        background-color: #f5c646;
+    }
+    .menu-toggle:hover {
+        background-image: url("images/megnor/menu-options-white.svg");
+        background-color: #000000;
+    }
+    .category-list{
+        width: 100%;
+    }
+}
+@media only screen and (min-width: 980px) and (max-width: 1023px) {
+    .home-category .product-categories.toggle-block, .home-category {
+        width: 310px;
+    }
+}
+@media only screen and (max-width: 979px) {
+
+    .header-toggle {
+        background-image: url("images/megnor/search.svg");
+        background-color: #f5c646;
+    }
+    .header-toggle:hover {
+        background-image: url("images/megnor/search-white.svg");
+        background-color: #000000;
+    }
+    .home-category .product-categories.toggle-block, .home-category {
+        width: 735px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .topbar-link-toggle {
+        background-color: #f5c646;
+    }
+    .topbar-link-toggle::before {
+        color: #000000;
+    }
+    .topbar-link-toggle:hover::before {
+        color: #ffffff;
+    }
+    .topbar-link-toggle:hover {
+        background-color: #000000;
+    }
+     .home-category .product-categories.toggle-block, .home-category {
+        width: 426px;
+    }
+
+}
+@media only screen and (max-width: 640px) {
+    .home-category .product-categories.toggle-block, .home-category {
+        width: 280px;
+    }
+
+}
