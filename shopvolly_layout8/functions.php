@@ -36,6 +36,32 @@ if ( ! function_exists( 'gmc_customer_review_thankyou' ) ) {
 	}
 }
 
+function add_theme_supports() {
+  add_theme_support( 'insight-popup' );
+}
+add_action( 'after_setup_theme', 'add_theme_supports' );
+
+/**
+ * Register widget area.
+ *
+ * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
+ */
+function chefstore_widgets_init() {
+	register_sidebar(
+		array(
+			'name'          => esc_html__( 'Filter', 'thememove' ),
+			'id'            => 'filter',
+			'description'   => esc_html__( 'Add widgets here.', 'thememove' ),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		)
+	);
+}
+
+add_action( 'widgets_init', 'chefstore_widgets_init' );
+
 // Change status of BACS orders to processing.
 add_action( 'woocommerce_thankyou_bacs', 'bacs_order_payment_processing_order_status', 10, 1 );
 function bacs_order_payment_processing_order_status( $order_id ) {
@@ -81,6 +107,14 @@ function mysite_filter_related_products( $related_product_ids ) {
         }
     }
     return $related_product_ids;
+}
+
+// create a URL to the child theme
+function get_template_directory_child() {
+  $directory_template = get_template_directory_uri(); 
+  $directory_child = str_replace('shopvolly', '', $directory_template) . 'shopvolly_layout8';
+
+  return $directory_child;
 }
 
 
@@ -130,7 +164,15 @@ function tmpmela_set_default_options_child()
 }
 add_action('init', 'tmpmela_set_default_options_child');
 function tmpmela_child_scripts() {
-    wp_enqueue_style( 'tmpmela-child-style', get_template_directory_uri(). '/style.css' );	
+    wp_enqueue_style( 'google-fonts', 'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap', false );
+    wp_enqueue_style( 'tmpmela-child-style', get_template_directory_uri(). '/style.css' );
+    wp_enqueue_script( 'headroom', get_theme_file_uri( '/libs/headroom.js' ), array(), '0.12.0', true );
+    wp_enqueue_script( 'tmpmela-child-script',
+    get_template_directory_child() . '/script.js',
+			array( 'jquery' ),
+			null,
+			true );	
+
 }
 add_action( 'wp_enqueue_scripts', 'tmpmela_child_scripts' );
 /********************************************************
@@ -191,6 +233,15 @@ function tmpmela_sampledata_after_import($selected_import) {
 add_action( 'pt-ocdi/after_import', 'tmpmela_sampledata_after_import' );
 endif;
 
+add_filter( 'body_class', 'chefstore_body_classes' );
+function chefstore_body_classes( $classes ) {
+	global $post;
+
+	$classes[] = 'active-0';
+
+	return $classes;
+}
+
 /** ADD ORDER INFO TO THANK YOU PAGE. */
 function wh_CustomReadOrder($order_id)
 {
@@ -214,4 +265,38 @@ function wh_CustomReadOrder($order_id)
 }
 
 add_action('woocommerce_thankyou', 'wh_CustomReadOrder');
+
+add_shortcode( 'filter_categories', 'tm_filter_categories' );
+function tm_filter_categories() {
+	$html = '';
+  $html .= '<h3 class="title-filter">Lọc theo danh mục</h3>';
+  $html .= '<div class="wrap-filter-by-cate">';
+  $category_lists = array();
+  $category_lists[0] = __('Select Category', 'gaga-lite');
+  $args = array(
+      'taxonomy' => 'product_cat',
+      'orderby' => 'name',
+      'hierarchical' => 0, // 1 for yes, 0 for no  
+      'hide_empty' => 0,
+      'exclude' => 1 //list of product_cat id that you want to exclude (string/array).
+  );
+  $all_categories = get_categories($args);
+  $html .= '<div class="wrap-item all">Tất cả</div>';
+  $i = 0;
+  foreach ($all_categories as $cat)
+  {
+      if ($cat->category_parent == 0)
+      {
+          $i = $i + 1;
+          $html .= '<div class="wrap-item active-'. $i .'">'. $cat->name .'</div>';
+          //get_term_link($cat->slug, 'product_cat')
+      }
+  }
+  // return $category_lists;
+  $html .= '</div>';
+	echo $html;
+}
+
 ?>
+
+
