@@ -625,8 +625,8 @@ body.active-8 .vc_col-sm-9 .wpb_text_column.active-8 {
 }
 
 /* Fonts */
-h1,h2,h3,h4,h5,h6,p,a {
-    font-family: 'Poppins', sans-serif !important;
+body,h1,h2,h3,h4,h5,h6,p,a,.wrap-item {
+    font-family: 'Roboto', sans-serif !important;
 }
 
 .header-sticky {
