@@ -762,6 +762,20 @@ html,body,h1,h2,h3,h4,h5,h6,p,a,.wrap-item {
     transform: translateY(-100%);
 }
 
+.flex-control-nav {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+    padding: 0 !important;
+}
+
+@media(max-width: 800px) {
+    .flex-control-nav {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
 /* For tablet */
 @media only screen and (max-width: 479px) {
 	body.page-id-17367 .woocommerce ul.products li.product,
